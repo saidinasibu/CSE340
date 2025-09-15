@@ -1,45 +1,47 @@
-/* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
-/* ***********************
- * Require Statements
- *************************/
-const expressLayouts = require("express-ejs-layouts")
-const express = require("express")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
+const express = require('express');
+const path = require('path');
+const expressLayouts = require('express-ejs-layouts');
 
+// Initialize express app first
+const app = express();
 
-/* ***********************
- * Routes
- *************************/
+// Middleware
+app.use(expressLayouts);
+app.set('layout', './layouts/layout');
 
+// Set up static assets directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.set("view engine", "ejs")
-app.use(expressLayouts)
-app.set("layout", "./layouts/layout") // not at views root
-/* ***********************
- * Routes
- *************************/
-app.use(static)
+// Configure view engine and views directory
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
+// Routes
+app.get('/', (req, res) => {
+    res.render('index', { 
+        title: 'Home',
+        message: 'Welcome to CSE340 Motors' 
+    });
+});
 
-/* ***********************
- * Log statement to confirm server operation
- *************************/
+app.get('/inventory', (req, res) => {
+    res.render('inventory', { title: 'Inventory' });
+});
+
+app.get('/about', (req, res) => {
+    res.render('about', { title: 'About Us' });
+});
+
+// Error handling
+app.use((req, res) => {
+    res.status(404).render('404', { title: 'Page Not Found' });
+});
+
+// Use environment port for Render
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
-})
+    console.log(`Server running on port ${port}`);
+    console.log(`Visit: http://localhost:${port}`);
+});
 
-// Index route
-app.get("/", function(req, res) {
-  res.render("index", { title: "Home" })
-})
+module.exports = app;
