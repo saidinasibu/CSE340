@@ -1,47 +1,30 @@
-const express = require('express');
-const path = require('path');
-const expressLayouts = require('express-ejs-layouts');
+const express = require("express");
+const path = require("path");
+const expressLayouts = require("express-ejs-layouts")
 
-// Initialize express app first
 const app = express();
 
-// Middleware
-app.use(expressLayouts);
-app.set('layout', './layouts/layout');
+// Définir le moteur de vue EJS
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-// Set up static assets directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware layouts
+app.use(expressLayouts)
+app.set("layout", "layouts/layout")
 
-// Configure view engine and views directory
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// Middleware pour fichiers statiques (CSS, images, etc.)
+app.use(express.static(path.join(__dirname, "public")));
 
-// Routes
-app.get('/', (req, res) => {
-    res.render('index', { 
-        title: 'Home',
-        message: 'Welcome to CSE340 Motors' 
-    });
+// Route principale
+app.get("/", (req, res) => {
+  res.render("index", { 
+    title: "Accueil",
+    message: "Bienvenue chez CSE Motors 🚗"
+  });
 });
 
-app.get('/inventory', (req, res) => {
-    res.render('inventory', { title: 'Inventory' });
+// Démarrer le serveur
+const PORT = 5500;
+app.listen(PORT, () => {
+  console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
-
-app.get('/about', (req, res) => {
-    res.render('about', { title: 'About Us' });
-});
-
-// Error handling
-app.use((req, res) => {
-    res.status(404).render('404', { title: 'Page Not Found' });
-});
-
-// Use environment port for Render
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-    console.log(`Visit: http://localhost:${port}`);
-});
-
-module.exports = app;
