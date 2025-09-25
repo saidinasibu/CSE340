@@ -4,9 +4,7 @@ const accountModel = require("../models/account-model");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-/* ****************************************
- *  Deliver Account Management View
- * *************************************** */
+
 async function buildAccountManagement(req, res, next) {
   let nav = await utilities.getNav();
   res.render("./account/", {
@@ -16,9 +14,6 @@ async function buildAccountManagement(req, res, next) {
   });
 }
 
-/* ****************************************
- *  Deliver login view
- * *************************************** */
 async function buildLogin(req, res, next) {
   let nav = await utilities.getNav();
   res.render("./account/login", {
@@ -28,9 +23,6 @@ async function buildLogin(req, res, next) {
   });
 }
 
-/* ****************************************
- *  Deliver register view
- * *************************************** */
 async function buildRegister(req, res, next) {
   let nav = await utilities.getNav();
   res.render("./account/register", {
@@ -40,9 +32,6 @@ async function buildRegister(req, res, next) {
   });
 }
 
-/* ****************************************
- *  Deliver Update Account view
- * *************************************** */
 async function buildAccountUpdate(req, res, next) {
   const string_account_id = req.params.account_id;
   const account_id = parseInt(string_account_id);
@@ -59,9 +48,6 @@ async function buildAccountUpdate(req, res, next) {
   });
 };
 
-/* ****************************************
- *  Process Registration
- * *************************************** */
 async function registerAccount(req, res) {
   let nav = await utilities.getNav();
   const {
@@ -71,10 +57,9 @@ async function registerAccount(req, res) {
     account_password,
   } = req.body;
 
-  // Hash the password before storing
   let hashedPassword;
   try {
-    // regular password and cost (salt is generated automatically)
+    
     hashedPassword = await bcrypt.hashSync(account_password, 10);
   } catch (error) {
     req.flash(
@@ -115,9 +100,7 @@ async function registerAccount(req, res) {
   }
 }
 
-/* ****************************************
- *  Process Log in
- * *************************************** */
+
 async function accountLogin(req, res) {
   let nav = await utilities.getNav();
   const { account_email, account_password } = req.body;
@@ -156,9 +139,6 @@ async function accountLogin(req, res) {
   }
 }
 
-/* ****************************************
- *  Process Update Account Info
- * *************************************** */
 async function updateAccountInfo(req, res) {
   let nav = await utilities.getNav();
   const {
@@ -216,17 +196,13 @@ async function updateAccountInfo(req, res) {
   }
 }
 
-/* ****************************************
- *  Process Update Password
- * *************************************** */
+
 async function updatePassword(req, res) {
   let nav = await utilities.getNav();
   const { account_password, account_id } = req.body;
 
-  // Hash the password before storing
   let hashedPassword;
   try {
-    // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10);
   } catch (error) {
     req.flash(
@@ -265,9 +241,6 @@ async function updatePassword(req, res) {
   }
 }
 
-/* ****************************************
- *  Process Logout
- * *************************************** */
 const logout = (req, res) => {
   res.clearCookie("jwt");
   res.clearCookie("userName");
