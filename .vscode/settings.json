@@ -1,6 +1,5 @@
 {
     "sqltools.connections": [
-        
         {
             "ssh": "Disabled",
             "previewLimit": 50,
@@ -12,6 +11,19 @@
             "username": "postgres",
             "password": "Zagadou92",
             "connectionTimeout": 30
+        },
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "Render.com",
+            "connectString": "postgresql://nasibusaidi:DMmTNOUHdWFaP3faxUJexdKm4u6n6bWh@dpg-d33ees3uibrs73aibbd0-a.frankfurt-postgres.render.com/nasibusaidi"
         }
     ],
     "mssql.objectExplorer.collapseConnectionGroupsOnStartup": true
