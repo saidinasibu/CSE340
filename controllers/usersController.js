@@ -5,6 +5,9 @@ const bcrypt = require("bcryptjs");
 
 const usersCont = {};
 
+/* ***************************
+ *  Build vehicle management view
+ * ************************** */
 usersCont.buildUsersManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
   const pageTitle = "Users Management";
@@ -15,7 +18,9 @@ usersCont.buildUsersManagement = async function (req, res, next) {
   });
 };
 
-
+/* ***************************
+ *  Return Users As JSON
+ * ************************** */
 usersCont.getUsersJSON = async (req, res, next) => {
   const usersData = await usersModel.getUsers();
   if (usersData[0].account_id) {
@@ -25,6 +30,9 @@ usersCont.getUsersJSON = async (req, res, next) => {
   }
 };
 
+/* ****************************************
+ *  Deliver delete confirmation view
+ * *************************************** */
 usersCont.deleteView = async function (req, res, next) {
   const account_id = parseInt(req.params.account_id);
   let nav = await utilities.getNav();
@@ -42,6 +50,9 @@ usersCont.deleteView = async function (req, res, next) {
   });
 };
 
+/* ****************************************
+ *  Process delete User
+ * *************************************** */
 usersCont.deleteUser = async function (req, res, next) {
   const { account_id } = req.body;
   const deleteResult = await usersModel.deleteUser(account_id);
@@ -54,6 +65,9 @@ usersCont.deleteUser = async function (req, res, next) {
   }
 };
 
+/* ****************************************
+ *  Deliver Update User view
+ * *************************************** */
 usersCont.buildUserUpdate = async function (req, res, next) {
   const string_account_id = req.params.account_id;
   const account_id = parseInt(string_account_id);
@@ -70,6 +84,9 @@ usersCont.buildUserUpdate = async function (req, res, next) {
   });
 };
 
+/* ****************************************
+ *  Process Update User Info
+ * *************************************** */
 usersCont.updateUserInfo = async function (req, res) {
   let nav = await utilities.getNav();
   const {
@@ -110,13 +127,17 @@ usersCont.updateUserInfo = async function (req, res) {
   }
 }
 
+/* ****************************************
+ *  Process Update User Password
+ * *************************************** */
 usersCont.updatePassword = async function (req, res) {
   let nav = await utilities.getNav();
   const { account_password, account_id } = req.body;
 
+  // Hash the password before storing
   let hashedPassword;
   try {
-   
+    // regular password and cost (salt is generated automatically)
     hashedPassword = await bcrypt.hashSync(account_password, 10);
   } catch (error) {
     req.flash(

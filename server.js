@@ -1,5 +1,8 @@
- require("dotenv").config(); 
+require("dotenv").config(); // Charger les variables d'environnement
 
+/* ******************************************
+ * Require Statements
+ ******************************************/
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
@@ -19,14 +22,21 @@ const accountController = require("./controllers/accountController");
 
 const app = express();
 
+/* ******************************************
+ * View Engine and Layouts
+ ******************************************/
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "./layouts/layout");
 
+/* ******************************************
+ * Middleware
+ ******************************************/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Session middleware
 app.use(
   session({
     store: new pgSession({
@@ -40,37 +50,40 @@ app.use(
   })
 );
 
-
+// JWT check
 app.use(utilities.checkJWTToken);
 
+// Expose cookies to views
 app.use((req, res, next) => {
   res.locals.cookies = req.cookies;
   next();
 });
 
-
+// Flash messages
 app.use(flash());
 app.use((req, res, next) => {
   res.locals.messages = require("express-messages")(req, res);
   next();
 });
 
-
+/* ******************************************
+ * Routes
+ ******************************************/
 app.use(staticRoutes);
 
-
+// Home page
 app.get("/", utilities.handleErrors(baseController.buildHome));
 
-
+// Inventory routes
 app.use("/inv", inventoryRoute);
 
-
+// Account routes
 app.use("/account", accountRoute);
 
-
+// Users routes
 app.use("/users", usersRoute);
 
-
+// Logout route
 app.post("/logout", utilities.handleErrors(accountController.logout));
 
 /* ******************************************
