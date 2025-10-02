@@ -36,6 +36,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// 👉 Sert les fichiers statiques (images, css, js)
+app.use(express.static("public"));
+
 // Session middleware
 app.use(
   session({
