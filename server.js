@@ -65,7 +65,8 @@ app.use((req, res, next) => {
   res.locals.messages = require("express-messages")(req, res);
   next();
 });
-
+// Index route
+app.get("/", baseController.buildHome);
 /* ******************************************
  * Routes
  ******************************************/
