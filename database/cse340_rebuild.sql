@@ -104,4 +104,4 @@ VALUES
      '/images/vehicles/mechanic.jpg','/images/vehicles/mechanic-tn.jpg',100,200125,'Rust',5),
 
     ('Ford','Model T',1921,
-     'The first mass-produced car. Available in any color as long as it’s black.',
+     'The first mass-produced car. Available in any color as long as it’s black.'),
